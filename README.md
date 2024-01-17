@@ -2,7 +2,7 @@
 
 1. Ailen Mansilla
 2. Martin Ssemugabi
-3. Ammon Jones
+3. Ammon JJones
 4. Godspower Okonkwo
 5. Jayson Ronald
 
