@@ -4,7 +4,7 @@
 2. Martin Ssemugabi
 3. Ammon JJones
 4. Godspower Okonkwo
-5. Jayson Ronald
+5. Jayson B. Ronald
 
 # Introduction
 
