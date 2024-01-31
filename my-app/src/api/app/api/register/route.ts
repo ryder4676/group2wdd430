@@ -1,5 +1,5 @@
-import User from "@/models/User";
-import connect from "@/utils/mongodb.js";
+import User from "@/api/models/User";
+import connect from "@/api/utils/mongodb.js";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
