@@ -7,9 +7,10 @@ export default function Home() {
   return (
     <>
     <Header/>
-    <div className={styles.component}>   
-       <h1 className={styles.title}>Handcrafted Heaven</h1>
-       <img className={styles.image} src="/hub-3852530_1920.jpg" alt="Handcraft Image" />
+    <div className={styles.component}>  
+    <div>
+    <img className={styles.image} src="/largeLogoGradient.jpg" alt="Handcraft Image" />
+      </div> 
     </div>
     <Footer/>
     </>

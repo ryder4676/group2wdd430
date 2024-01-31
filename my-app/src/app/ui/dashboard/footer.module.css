@@ -1,4 +1,9 @@
-div.component{
+.component{
     background-color: #360568;
     color: white;
+    text-align: center;
+}
+
+.img{
+    width: 50px;
 }
