@@ -8,5 +8,8 @@ font-size: 60px;
 }
 
 .image{
-  width: 100vw;
+  width: 90vw;
+  display: block;
+  margin: 30px auto;
 }
+
