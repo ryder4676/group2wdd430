@@ -1,4 +1,4 @@
-import fetchProductsById from '@/app/lib/data';
+import fetchProductsById from '/';
 
 export default async function ProductGrid( {id}:{id: string} ){
     try {
