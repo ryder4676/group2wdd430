@@ -1,7 +1,6 @@
-import Nav from './nav';
+import Nav from '@/app/ui/dashboard/nav';
 import Link from 'next/link';
 import styles from "./header.module.css";
-import Image from 'next/image';
 
 export default function Header() {
   return (
@@ -11,7 +10,7 @@ export default function Header() {
         {/* LOG IN or SELLER'S NAME */}
         </Link>
         <Nav />
-        <Image className={styles.img} src='/logo-justbird.png' alt="" />
+        <img className={styles.img} src='/logo-justbird.png' alt="" />
     </div>
   );
 }
