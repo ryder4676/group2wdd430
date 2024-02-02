@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": ["node"],
 
     "plugins": [
       {
@@ -27,9 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "server.ts",
-    "src/**/*",
-    "src/utils/mongodb.js"
+    "server.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "files": ["src/globals.d.ts"] // Create a globals.d.ts file and reference it
 }
