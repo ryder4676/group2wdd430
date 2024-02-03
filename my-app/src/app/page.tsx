@@ -9,7 +9,7 @@ export default function Home() {
     <Header/>
     <div className={styles.component}>  
     <div>
-    <img className={styles.image} src="/largeLogoGradient.jpg" alt="Handcraft Image" />
+    <img className={styles.image} src="/logo5000x1292222.jpg" alt="Handcraft Image" />
       </div> 
     </div>
     <Footer/>
