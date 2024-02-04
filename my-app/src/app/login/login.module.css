@@ -1,10 +1,17 @@
 .main{
     padding: 30px;
     min-height: 80vh;
+
 }
 .form{
     display: flex;
     flex-direction: column;
+    align-items: center;
+    margin: 50px auto; 
+    width: 300px;
+    padding: 10px;
+    background-color: #9AC6C5;
+    padding-block: 20px;
 }
 .label{
     display: flex;
@@ -13,6 +20,7 @@
     min-height: 100px;
     justify-content: space-between;
     margin-bottom: 20px;
+    font-weight: bold;
 }
 .input{
     height: 35px;
@@ -21,7 +29,18 @@
     border: none;
     border: #360568 solid 3px;
     font-size: 20px;
+    outline: none;
+    box-sizing: border-box;
+    width: 250px;
 }
 .main.form.label.input:focus{
     border-color:#360568;
+}
+.button{
+    background-color: #360568;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+    width: 250px;
+    cursor: pointer;
 }
