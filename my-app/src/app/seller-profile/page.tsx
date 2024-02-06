@@ -9,12 +9,13 @@ export default async function Page({ params }: { params: { id: string; name: str
     return(
         <div className="profile">
             <div className="profile-header">
-                <img className="profile-picture" src="/" alt="Seller profile picture" />
-                <p className="profile-name">{name}</p>
-                <p className="profile-description">{description}</p>
+                <p>Seller profile Page</p>
+                    {/* <img className="profile-picture" src="/" alt="Seller profile picture" />
+                    <p className="profile-name">{name}</p>
+                    <p className="profile-description">{description}</p> */}
             </div>
             {/* we receive a div with all of their crafts on sale */}
-            <ProductGrid id={id} />
+            {/* <ProductGrid id={id} /> */}
         </div>
     );
 }

@@ -8,14 +8,14 @@ export default function Form({id}:{id: string}){
 // Returns two values: [state, dispatch] - the form state, and a dispatch function
     const initialState = { message: null, errors: {}};
     const [state, dispatch] = useFormState(createProduct, initialState);    
-
+// handle the input
     return <form action={dispatch}>
         {/* we need to send the seller's id */}
         <input 
             type="hidden" 
             id="sellerId" 
             name="sellerId" 
-            value={id}
+            value='5'
         />
 
         <label htmlFor="name" className="label-product">

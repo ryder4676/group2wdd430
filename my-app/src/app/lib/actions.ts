@@ -20,6 +20,7 @@ export async function createProduct(prevState: State, formData: FormData) {
     const name = formData.get('name');
     const price = formData.get('price');
     const description = formData.get('description');
+    console.log(formData);
    
     try {
       await sql`

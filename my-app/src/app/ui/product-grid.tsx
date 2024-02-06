@@ -1,4 +1,4 @@
-import fetchProductsById, fetchAllProducts from '/';
+import { fetchProductsById, fetchAllProducts} from '../lib/actions';
 
 export default async function ProductGrid( {id}:{id: string} ){
     try {
@@ -6,7 +6,7 @@ export default async function ProductGrid( {id}:{id: string} ){
         } catch (error) {
     // display an error message or redirect
     console.error('Error fetching products:', error);
-    }
+    } 
 
     return(
         <div className='craft-section'>
