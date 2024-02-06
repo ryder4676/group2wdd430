@@ -13,18 +13,18 @@ export async function updateProduct(id: String, data: Data) {
   try {
     await connect();
     const { name, description, price, category, imageUrl } = data;
-    if (!name || !description || !price || !category || !imageUrl) {
+    if (!name && !description && !price && !category && !imageUrl) {
       return NextResponse.json("At least a field is needed to update");
     }
     const updateProduct = await Product.findOneAndUpdate(
       { _id: id },
       {
         $set: {
-          name: name,
-          description: description,
-          price: price,
-          category: category,
-          image: imageUrl,
+          name,
+          description,
+          price,
+          category,
+          imageUrl,
         },
       },
       { new: true }

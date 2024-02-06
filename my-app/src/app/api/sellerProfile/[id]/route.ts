@@ -17,19 +17,30 @@ interface Data {
 export async function updateSellerProfile(id: String, data: Data) {
   try {
     await connect();
-
+    const {
+      address,
+      averageRating,
+      city,
+      country,
+      description,
+      email,
+      phone,
+      sellerName,
+      storeName,
+      totalRatings,
+    } = data;
     if (
-      !data.address &&
-      !data.averageRating &&
-      !data.city &&
-      !data.country &&
-      !data.description &&
-      !data.email &&
-      !data.phone &&
-      !data.sellerName &&
-      !data.storeName &&
-      !data.storeName &&
-      !data.totalRatings
+      address &&
+      averageRating &&
+      city &&
+      country &&
+      description &&
+      email &&
+      phone &&
+      sellerName &&
+      storeName &&
+      storeName &&
+      totalRatings
     ) {
       return NextResponse.json("At least a field is needed to update");
     }
@@ -37,7 +48,16 @@ export async function updateSellerProfile(id: String, data: Data) {
       { _id: id },
       {
         $set: {
-          data,
+          address,
+          averageRating,
+          city,
+          country,
+          description,
+          email,
+          phone,
+          sellerName,
+          storeName,
+          totalRatings,
         },
       },
       { new: true }

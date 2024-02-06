@@ -20,7 +20,7 @@ interface Data {
   imageUrl: String;
 }
 
-export async function postProduct(data: Data, id: string) {
+export async function postProduct(data: Data, sellerId: string) {
   await connect();
   try {
     const validation = createProductSchema.safeParse(data);
@@ -30,7 +30,7 @@ export async function postProduct(data: Data, id: string) {
     }
     const { name, description, price, category, imageUrl } = data;
     const postProduct = await Product.create({
-      sellerId: id,
+      sellerId: sellerId,
       name,
       description,
       price,

@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
 import SellerProfile from "../../models/Seller";
 import { connect } from "../../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const createSellerProfile = z.object({
@@ -32,9 +32,9 @@ export async function createSeller(data: Data) {
   try {
     const validation = createSellerProfile.safeParse(data);
 
-    // if (!validation.success) {
-    //   return NextResponse.json(validation.error.errors, { status: 400 });
-    // }
+    if (!validation.success) {
+      return NextResponse.json(validation.error.errors, { status: 400 });
+    }
     const {
       sellerName,
       email,
@@ -48,16 +48,16 @@ export async function createSeller(data: Data) {
       totalRatings,
     } = data;
     const postSeller = await SellerProfile.create({
-      sellerName: "Example Seller",
-      email: "example@example.com",
-      phone: "1234567890",
-      country: "Example Country",
-      city: "Example City",
-      address: "123 Example Street",
-      storeName: "Example Store",
-      description: "Example Description",
-      averageRating: 4.5,
-      totalRatings: 100,
+      sellerName,
+      email,
+      phone,
+      country,
+      city,
+      address,
+      storeName,
+      description,
+      averageRating,
+      totalRatings,
     });
 
     if (postSeller) {
