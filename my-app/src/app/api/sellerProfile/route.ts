@@ -1,12 +1,8 @@
-import { NextApiResponse } from "next";
 import SellerProfile from "../models/Seller";
 import { connect } from "../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function getSellers(
-  request: NextRequest,
-  response: NextApiResponse
-) {
+export async function getSellers() {
   await connect();
   try {
     const sellers = await SellerProfile.find();
@@ -21,7 +17,7 @@ export async function getSellers(
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

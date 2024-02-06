@@ -1,88 +1,67 @@
-import { NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import Product from "@/app/api/models/Product";
 
-export async function updateProduct(
-  request: NextRequest,
-  response: NextApiResponse,
-  id: String,
-  data: object
-) {
+interface Data {
+  name: string;
+  description: String;
+  price: Number;
+  category: String;
+  imageUrl: String;
+}
+export async function updateProduct(id: String, data: Data) {
   try {
     await connect();
-    const body = await request.json();
-    console.log(body);
-
-    if (request.method === "PUT") {
-      const { name, description, price, category, imageUrl } = body;
-      if (!name && !description && !price && !category && !imageUrl) {
-        return NextResponse.json("At least a field is needed to update");
-      }
-      const updateProduct = await Product.findOneAndUpdate(
-        { _id: "65bbf9f6ca03a06622e8dd84" },
-        {
-          $set: {
-            name,
-            description,
-            price,
-            category,
-            imageUrl,
-          },
+    const { name, description, price, category, imageUrl } = data;
+    if (!name || !description || !price || !category || !imageUrl) {
+      return NextResponse.json("At least a field is needed to update");
+    }
+    const updateProduct = await Product.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          name: name,
+          description: description,
+          price: price,
+          category: category,
+          image: imageUrl,
         },
-        { new: true }
-      );
+      },
+      { new: true }
+    );
 
-      if (updateProduct) {
-        return NextResponse.json(
-          { message: "Product Updated" },
-          { status: 201 }
-        );
-      }
-    } else {
-      return response.json({ error: "Method Not Allowed" });
+    if (updateProduct) {
+      return NextResponse.json({ message: "Product Updated" }, { status: 201 });
     }
   } catch (error) {
     console.error("Error:", error);
-    return response.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
-export async function deleteProduct(
-  request: NextRequest,
-  response: NextApiResponse,
-  id: String
-) {
+export async function deleteProduct(id: String) {
   try {
     await connect();
 
-    if (request.method === "DELETE") {
-      const deleteProduct = await Product.findByIdAndDelete({
-        _id: "65be586c49650987060c660f",
-      });
+    const deleteProduct = await Product.findByIdAndDelete({
+      _id: id,
+    });
 
-      if (deleteProduct) {
-        return NextResponse.json(
-          { message: "Product Deleted" },
-          { status: 200 }
-        );
-      }
-    } else {
-      response.json({ error: "Method Not Allowed" });
+    if (deleteProduct) {
+      return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-export async function getProductsById(
-  request: NextRequest,
-  response: NextApiResponse,
-  id: string
-) {
+export async function getProductsById(id: string) {
   try {
     await connect();
-    const product = await Product.findById("65bbf9f6ca03a06622e8dd84");
+    const product = await Product.findById(id).populate("sellerId");
 
     if (product) {
       return NextResponse.json(
@@ -94,7 +73,7 @@ export async function getProductsById(
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" });
   }
 }
 

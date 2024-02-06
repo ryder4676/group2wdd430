@@ -1,7 +1,6 @@
-import { NextApiResponse } from "next";
 import Product from "../../models/Product";
 import { connect } from "../../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const createProductSchema = z.object({
@@ -12,37 +11,39 @@ const createProductSchema = z.object({
   imageUrl: z.string().min(1),
 });
 
-export async function postProduct(
-  request: NextRequest,
-  response: NextApiResponse,
-  data: object
-) {
+interface Data {
+  sellerId: string;
+  name: string;
+  description: String;
+  price: Number;
+  category: String;
+  imageUrl: String;
+}
+
+export async function postProduct(data: Data, id: string) {
   await connect();
   try {
-    const body = await request.json();
+    const validation = createProductSchema.safeParse(data);
 
-    console.log(body);
+    if (!validation.success) {
+      return NextResponse.json(validation.error.errors, { status: 400 });
+    }
+    const { name, description, price, category, imageUrl } = data;
+    const postProduct = await Product.create({
+      sellerId: id,
+      name,
+      description,
+      price,
+      category,
+      imageUrl,
+    });
 
-    if (request.method === "POST") {
-      const validation = createProductSchema.safeParse(body);
-
-      if (!validation.success) {
-        return NextResponse.json(validation.error.errors, { status: 400 });
-      }
-      const postProduct = await Product.create(body);
-
-      if (postProduct) {
-        return NextResponse.json(
-          { message: "Product Created" },
-          { status: 201 }
-        );
-      }
-    } else {
-      response.json({ error: "Method Not Allowed" });
+    if (postProduct) {
+      return NextResponse.json({ message: "Product Created" }, { status: 201 });
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

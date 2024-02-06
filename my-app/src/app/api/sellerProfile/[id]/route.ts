@@ -1,133 +1,102 @@
-import { NextApiResponse } from "next";
 import { connect } from "../../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import SellerProfile from "../../models/Seller";
 
-export async function updateSellerProfile(
-  request: NextRequest,
-  response: NextApiResponse,
-  id: String,
-  data: object
-) {
+interface Data {
+  sellerName: string;
+  email: string;
+  phone: string;
+  country: string;
+  city: string;
+  address: string;
+  storeName: string;
+  description: string;
+  averageRating: number;
+  totalRatings: number;
+}
+export async function updateSellerProfile(id: String, data: Data) {
   try {
     await connect();
-    const body = await request.json();
-    console.log(body);
 
-    if (request.method === "PUT") {
-      const {
-        sellerName,
-        email,
-        phone,
-        country,
-        city,
-        address,
-        storeName,
-        description,
-        averageRating,
-        totalRatings,
-      } = body;
-      if (
-        !sellerName &&
-        !email &&
-        !phone &&
-        !country &&
-        !city &&
-        !address &&
-        !storeName &&
-        !averageRating &&
-        !totalRatings
-      ) {
-        return NextResponse.json("At least a field is needed to update");
-      }
-      const updateSeller = await SellerProfile.findOneAndUpdate(
-        { _id: id },
-        {
-          $set: {
-            sellerName,
-            email,
-            phone,
-            country,
-            city,
-            address,
-            storeName,
-            description,
-            averageRating,
-            totalRatings,
-          },
+    if (
+      !data.address &&
+      !data.averageRating &&
+      !data.city &&
+      !data.country &&
+      !data.description &&
+      !data.email &&
+      !data.phone &&
+      !data.sellerName &&
+      !data.storeName &&
+      !data.storeName &&
+      !data.totalRatings
+    ) {
+      return NextResponse.json("At least a field is needed to update");
+    }
+    const updateSeller = await SellerProfile.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          data,
         },
-        { new: true }
-      );
+      },
+      { new: true }
+    );
 
-      if (updateSeller) {
-        return NextResponse.json(
-          { message: "Product Updated" },
-          { status: 201 }
-        );
-      }
-    } else {
-      return response.json({ error: "Method Not Allowed" });
+    if (updateSeller) {
+      return NextResponse.json({ message: "Product Updated" }, { status: 201 });
     }
   } catch (error) {
     console.error("Error:", error);
-    return response.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
-export async function deleteSeller(
-  request: NextRequest,
-  response: NextApiResponse,
-  id: String
-) {
+export async function deleteSeller(id: String) {
   try {
     await connect();
+    const seller = await SellerProfile.findOne({ _id: id });
+    if (!seller) {
+      return NextResponse.json(
+        { message: "seller Not Found" },
+        { status: 400 }
+      );
+    }
+    const sellerProflie = await SellerProfile.findByIdAndDelete({
+      _id: id,
+    });
 
-    if (request.method === "DELETE") {
-      const seller = await SellerProfile.findOne({ _id: id });
-      if (!seller) {
-        return NextResponse.json(
-          { message: "seller Not Found" },
-          { status: 400 }
-        );
-      }
-      const sellerProflie = await SellerProfile.findByIdAndDelete({
-        _id: id,
-      });
-
-      if (sellerProflie) {
-        return NextResponse.json(
-          { message: "Product Deleted" },
-          { status: 200 }
-        );
-      }
-    } else {
-      response.json({ error: "Method Not Allowed" });
+    if (sellerProflie) {
+      return NextResponse.json({ message: "Product Deleted" }, { status: 200 });
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-export async function getSeller(
-  request: NextRequest,
-  response: NextApiResponse,
-  id: string
-) {
+export async function getSeller(id: string) {
   try {
     await connect();
     const seller = await SellerProfile.findById({ _id: id });
 
     if (seller) {
       return NextResponse.json(
-        { meesage: "Seller Found", seller },
+        { message: "Seller Found", seller },
         { status: 200 }
       );
     } else {
-      NextResponse.json({ message: "Product Not Found" }, { status: 400 });
+      return NextResponse.json(
+        { message: "Product Not Found" },
+        { status: 400 }
+      );
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

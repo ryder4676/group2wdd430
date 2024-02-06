@@ -16,6 +16,7 @@ const sellerProfileSchema = new Schema({
 });
 
 const SellerProfile =
-  models.sellerProfileSchema || model("SellerProfile", sellerProfileSchema);
+  models.sellerProfileSchema ||
+  model("SellerProfileSchema", sellerProfileSchema);
 
 export default SellerProfile;

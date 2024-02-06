@@ -1,15 +1,11 @@
-import { NextApiResponse } from "next";
 import Product from "../models/Product";
 import { connect } from "../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function getProducts(
-  request: NextRequest,
-  response: NextApiResponse
-) {
+export async function getProducts() {
   await connect();
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("sellerId");
 
     if (products.length === 0) {
       return NextResponse.json(
@@ -21,7 +17,7 @@ export async function getProducts(
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
