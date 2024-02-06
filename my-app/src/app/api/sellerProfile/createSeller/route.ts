@@ -1,4 +1,3 @@
-import { NextApiResponse } from "next";
 import SellerProfile from "../../models/Seller";
 import { connect } from "../../../utils/mongodb";
 import { NextResponse } from "next/server";
