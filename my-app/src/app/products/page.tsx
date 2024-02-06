@@ -1,2 +1,13 @@
-// we'll render all of the products from all of the sellers here
-// We can add options to filter or organized the products
+import {  AllProductsGrid} from '@/app/ui/product-grid';
+
+export default async function Page() {
+    
+    return(
+        <div className="products-page">
+            <div className="products-page-header">
+                <p>Products Page</p>
+                < AllProductsGrid />
+            </div>
+        </div>
+    );
+}
