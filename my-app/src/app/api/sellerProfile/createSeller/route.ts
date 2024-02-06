@@ -1,7 +1,6 @@
-import { NextApiResponse } from "next";
 import SellerProfile from "../../models/Seller";
 import { connect } from "../../../utils/mongodb";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const createSellerProfile = z.object({
@@ -14,37 +13,58 @@ const createSellerProfile = z.object({
   storeName: z.string().min(1).max(255),
 });
 
-export async function createSeller(
-  request: NextRequest,
-  response: NextApiResponse,
-  data: object
-) {
+interface Data {
+  sellerName: string;
+  email: string;
+  phone: string;
+  country: string;
+  city: string;
+  address: string;
+  storeName: string;
+  description: string;
+  averageRating: number;
+  totalRatings: number;
+}
+
+export async function createSeller(data: Data) {
   await connect();
   try {
-    const body = await request.json();
+    const validation = createSellerProfile.safeParse(data);
 
-    console.log(body);
+    if (!validation.success) {
+      return NextResponse.json(validation.error.errors, { status: 400 });
+    }
+    const {
+      sellerName,
+      email,
+      phone,
+      country,
+      city,
+      address,
+      storeName,
+      description,
+      averageRating,
+      totalRatings,
+    } = data;
+    const postSeller = await SellerProfile.create({
+      sellerName,
+      email,
+      phone,
+      country,
+      city,
+      address,
+      storeName,
+      description,
+      averageRating,
+      totalRatings,
+    });
 
-    if (request.method === "POST") {
-      const validation = createSellerProfile.safeParse(body);
-
-      if (!validation.success) {
-        return NextResponse.json(validation.error.errors, { status: 400 });
-      }
-      const postSeller = await SellerProfile.create(body);
-
-      if (postSeller) {
-        return NextResponse.json(
-          { message: "Seller Created" },
-          { status: 201 }
-        );
-      }
-    } else {
-      response.json({ error: "Method Not Allowed" });
+    if (postSeller) {
+      return NextResponse.json({ message: "Seller Created" }, { status: 201 });
     }
   } catch (error) {
     console.error("Error:", error);
-    response.status(500).json({ error: "Internal Server Error" });
+    NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 

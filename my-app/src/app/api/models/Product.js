@@ -1,6 +1,10 @@
-import mongoose from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const productSchema = new mongoose.Schema({
+const productSchema = new Schema({
+  sellerId: {
+    type: Schema.Types.ObjectId,
+    ref: "SellerProfile",
+  },
   name: {
     type: String,
     required: true,
