@@ -76,6 +76,24 @@ export async function getProductsById(id: string) {
     NextResponse.json({ error: "Internal Server Error" });
   }
 }
+export async function getProductsBysellerId(sellerId: string) {
+  try {
+    await connect();
+    const product = await Product.findById(sellerId).populate("sellerId");
+
+    if (product) {
+      return NextResponse.json(
+        { meesage: "Product Found", product },
+        { status: 200 }
+      );
+    } else {
+      NextResponse.json({ message: "Product Not Found" }, { status: 400 });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    NextResponse.json({ error: "Internal Server Error" });
+  }
+}
 
 export {
   updateProduct as PUT,
