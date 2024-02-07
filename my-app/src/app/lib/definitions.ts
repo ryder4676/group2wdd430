@@ -1,0 +1,1 @@
+// define the db tables' data types
